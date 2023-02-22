@@ -1,9 +1,12 @@
 package com.lex.xeldoprojectmanagement
 
+import android.content.Intent
 import android.graphics.Typeface
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.TextView
@@ -30,8 +33,13 @@ class SplashActivity : AppCompatActivity() {
         }
 
         val typeFace: Typeface = Typeface.createFromAsset(assets, "ethnocentric rg.otf")
-
         val tvAppName: TextView = findViewById(R.id.tvAppName)
         tvAppName.typeface = typeFace
+
+
+        Handler(Looper.getMainLooper()).postDelayed({
+         startActivity(Intent(this, IntroActivity::class.java))
+         finish()
+        }, 2500)
     }
 }

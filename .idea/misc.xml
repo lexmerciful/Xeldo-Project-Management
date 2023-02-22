@@ -3,6 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/JavaPogram/XeldoProjectManagement/app/src/main/res/drawable/shape_button_rounded.xml" value="0.1945" />
+        <entry key="..\:/JavaPogram/XeldoProjectManagement/app/src/main/res/drawable/shape_button_white_border.xml" value="0.1945" />
+        <entry key="..\:/JavaPogram/XeldoProjectManagement/app/src/main/res/layout/activity_intro.xml" value="0.22" />
         <entry key="..\:/JavaPogram/XeldoProjectManagement/app/src/main/res/layout/activity_main.xml" value="0.17074275362318841" />
         <entry key="..\:/JavaPogram/XeldoProjectManagement/app/src/main/res/layout/activity_splash.xml" value="0.16485507246376813" />
       </map>
