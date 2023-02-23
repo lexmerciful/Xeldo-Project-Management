@@ -3,8 +3,7 @@
 
     <dimen name="splash_screen_title_text_size">70sp</dimen>
 
-    <dimen name="btn_corner_radius">10dp</dimen>
-
+    <!-- Intro Activity -->
     <dimen name="intro_screen_title_text_size">50sp</dimen>
     <dimen name="intro_screen_title_text_marginTop">40dp</dimen>
     <dimen name="intro_screen_image_marginTop">30dp</dimen>
@@ -19,7 +18,9 @@
     <dimen name="btn_paddingTopBottom">8dp</dimen>
     <dimen name="intro_screen_sign_up_btn_marginTop">15dp</dimen>
     <dimen name="btn_text_size">18sp</dimen>
+    <dimen name="btn_corner_radius">10dp</dimen>
 
+    <!-- Sign Up Activity -->
     <dimen name="sign_up_screen_btn_marginTop">30dp</dimen>
     <dimen name="toolbar_title_text_size">18sp</dimen>
     <dimen name="authentication_screen_content_marginTop">40dp</dimen>
@@ -39,5 +40,6 @@
     <dimen name="progress_bar_size">50dp</dimen>
     <dimen name="progress_text_marginStart">16dp</dimen>
     <dimen name="progress_text_size">16sp</dimen>
+    <dimen name="authentication_description_marginTop">70dp</dimen>
 
 </resources>

@@ -7,7 +7,10 @@
         <entry key="..\:/JavaPogram/XeldoProjectManagement/app/src/main/res/drawable/shape_button_white_border.xml" value="0.1945" />
         <entry key="..\:/JavaPogram/XeldoProjectManagement/app/src/main/res/layout/activity_intro.xml" value="0.22" />
         <entry key="..\:/JavaPogram/XeldoProjectManagement/app/src/main/res/layout/activity_main.xml" value="0.17074275362318841" />
+        <entry key="..\:/JavaPogram/XeldoProjectManagement/app/src/main/res/layout/activity_sign_in.xml" value="0.19010416666666666" />
+        <entry key="..\:/JavaPogram/XeldoProjectManagement/app/src/main/res/layout/activity_sign_up.xml" value="0.20416666666666666" />
         <entry key="..\:/JavaPogram/XeldoProjectManagement/app/src/main/res/layout/activity_splash.xml" value="0.16485507246376813" />
+        <entry key="..\:/JavaPogram/XeldoProjectManagement/app/src/main/res/layout/dialog_progress.xml" value="0.17074275362318841" />
       </map>
     </option>
   </component>

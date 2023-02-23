@@ -1,4 +1,4 @@
-package com.lex.xeldoprojectmanagement
+package com.lex.xeldoprojectmanagement.activities
 
 import android.content.Intent
 import android.graphics.Typeface
@@ -10,6 +10,7 @@ import android.os.Looper
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.TextView
+import com.lex.xeldoprojectmanagement.R
 import com.lex.xeldoprojectmanagement.databinding.ActivitySplashBinding
 
 class SplashActivity : AppCompatActivity() {
