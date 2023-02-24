@@ -15,6 +15,6 @@
     <color name="secondary_text_color">#7A8089</color>
 
     <color name="snackbar_error_color">#F72400</color>
-    <color name="btnSignUpEndColor">#0A80F5</color>
-    <color name="btnSignUpStartColor">#0BCCEB</color>
+    <color name="end_color_shape">#0A80F5</color>
+    <color name="start_color_shape">#0BCCEB</color>
 </resources>

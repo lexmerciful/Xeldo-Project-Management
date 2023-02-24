@@ -7,6 +7,4 @@
         android:endColor="@color/end_color_shape"
         android:type="linear"/>
 
-    <corners android:radius="@dimen/btn_corner_radius"/>
-
 </shape>
