@@ -11,6 +11,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.lex.xeldoprojectmanagement.R
 import com.lex.xeldoprojectmanagement.databinding.ActivitySignUpBinding
+import com.lex.xeldoprojectmanagement.firebase.FirestoreClass
+import com.lex.xeldoprojectmanagement.models.Users
 
 class SignUpActivity : BaseActivity() {
 
@@ -55,6 +57,14 @@ class SignUpActivity : BaseActivity() {
         }
     }
 
+    fun userRegisteredSuccess(){
+        hideProgressDialog()
+        Toast.makeText(this,
+            "You have successfully registered", Toast.LENGTH_SHORT).show()
+        FirebaseAuth.getInstance().signOut()
+        finish()
+    }
+
     private fun registerUser(){
         val name = binding.etName.text.toString().trim()
         val email = binding.etEmail.text.toString().trim()
@@ -66,14 +76,12 @@ class SignUpActivity : BaseActivity() {
             FirebaseAuth.getInstance()
                 .createUserWithEmailAndPassword(email, password).addOnCompleteListener {
                 task ->
-                    hideProgressDialog()
+
                     if (task.isSuccessful){
                         val firebaseUser: FirebaseUser = task.result!!.user!!
                         val registeredEmail = firebaseUser.email!!
-                        Toast.makeText(this,
-                        "$name you have successfully registered $registeredEmail", Toast.LENGTH_SHORT).show()
-                        FirebaseAuth.getInstance().signOut()
-                        finish()
+                        val user = Users(firebaseUser.uid, name, registeredEmail)
+                        FirestoreClass().registerUser(this, user)
                     }else{
                         Toast.makeText(this,
                             task.exception!!.message, Toast.LENGTH_SHORT).show()

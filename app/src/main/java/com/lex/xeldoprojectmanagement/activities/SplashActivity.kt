@@ -12,6 +12,7 @@ import android.view.WindowManager
 import android.widget.TextView
 import com.lex.xeldoprojectmanagement.R
 import com.lex.xeldoprojectmanagement.databinding.ActivitySplashBinding
+import com.lex.xeldoprojectmanagement.firebase.FirestoreClass
 
 class SplashActivity : AppCompatActivity() {
 
@@ -39,8 +40,15 @@ class SplashActivity : AppCompatActivity() {
 
 
         Handler(Looper.getMainLooper()).postDelayed({
-         startActivity(Intent(this, IntroActivity::class.java))
-         finish()
+
+            val currentUserID = FirestoreClass().getCurrentUserId()
+
+            if (currentUserID.isNotEmpty()){
+                startActivity(Intent(this, MainActivity::class.java))
+            }else{
+                startActivity(Intent(this, IntroActivity::class.java))
+            }
+            finish()
         }, 2500)
     }
 }

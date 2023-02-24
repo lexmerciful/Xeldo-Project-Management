@@ -14,6 +14,8 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.lex.xeldoprojectmanagement.R
 import com.lex.xeldoprojectmanagement.databinding.ActivitySignInBinding
+import com.lex.xeldoprojectmanagement.firebase.FirestoreClass
+import com.lex.xeldoprojectmanagement.models.Users
 
 class SignInActivity : BaseActivity() {
 
@@ -63,6 +65,12 @@ class SignInActivity : BaseActivity() {
         }
     }
 
+    fun signInSuccess(users: Users){
+        hideProgressDialog()
+        startActivity(Intent(this@SignInActivity, MainActivity::class.java))
+        finish()
+    }
+
     private fun signInUser(){
         val email = binding.etEmailSignIn.text.toString().trim()
         val password = binding.etPasswordSignIn.text.toString()
@@ -75,8 +83,7 @@ class SignInActivity : BaseActivity() {
                     if (task.isSuccessful) {
                         val user = auth.currentUser
                         Log.d("SIGN IN SUCCESS", "$user signInWithCustomToken:success")
-                        startActivity(Intent(this@SignInActivity, MainActivity::class.java))
-
+                        FirestoreClass().signInUser(this)
                     }else{
                         Log.w("SIGN IN FAILED", "signInWithCustomToken:failure", task.exception)
                         Toast.makeText(baseContext, "Authentication failed.",
