@@ -40,6 +40,6 @@
     <dimen name="progress_bar_size">50dp</dimen>
     <dimen name="progress_text_marginStart">16dp</dimen>
     <dimen name="progress_text_size">16sp</dimen>
-    <dimen name="authentication_description_marginTop">70dp</dimen>
+    <dimen name="authentication_description_marginTop">60dp</dimen>
 
 </resources>

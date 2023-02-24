@@ -23,16 +23,16 @@ open class BaseActivity : AppCompatActivity() {
         setContentView(R.layout.activity_base)
     }
 
-    private fun showProgressDialog(text: String){
+    fun showProgressDialog(text: String){
         mProgressDialog = Dialog(this)
         mProgressDialog.setContentView(R.layout.dialog_progress)
-        val tvProgressText: TextView = findViewById(R.id.tv_progress_text)
+        val tvProgressText: TextView = mProgressDialog.findViewById(R.id.tv_progress_text)
         tvProgressText.text = text
         mProgressDialog.setCancelable(false)
         mProgressDialog.show()
     }
 
-    private fun cancelProgressDialog(){
+    fun hideProgressDialog(){
             mProgressDialog.dismiss()
     }
 
