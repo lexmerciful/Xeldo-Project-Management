@@ -3,11 +3,16 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/JavaPogram/XeldoProjectManagement/app/src/main/res/drawable-anydpi/ic_dashboard.xml" value="0.1945" />
+        <entry key="..\:/JavaPogram/XeldoProjectManagement/app/src/main/res/drawable/ic_action_navigation_menu.xml" value="0.2115" />
+        <entry key="..\:/JavaPogram/XeldoProjectManagement/app/src/main/res/drawable/ic_dashboard.xml" value="0.1945" />
+        <entry key="..\:/JavaPogram/XeldoProjectManagement/app/src/main/res/drawable/ic_nav_sign_out.xml" value="0.1945" />
         <entry key="..\:/JavaPogram/XeldoProjectManagement/app/src/main/res/drawable/nav_header_main_background.xml" value="0.2105" />
         <entry key="..\:/JavaPogram/XeldoProjectManagement/app/src/main/res/drawable/shape_button_rounded.xml" value="0.1945" />
         <entry key="..\:/JavaPogram/XeldoProjectManagement/app/src/main/res/drawable/shape_button_white_border.xml" value="0.1945" />
         <entry key="..\:/JavaPogram/XeldoProjectManagement/app/src/main/res/layout/activity_intro.xml" value="0.22" />
         <entry key="..\:/JavaPogram/XeldoProjectManagement/app/src/main/res/layout/activity_main.xml" value="0.17074275362318841" />
+        <entry key="..\:/JavaPogram/XeldoProjectManagement/app/src/main/res/layout/activity_profile.xml" value="0.17074275362318841" />
         <entry key="..\:/JavaPogram/XeldoProjectManagement/app/src/main/res/layout/activity_sign_in.xml" value="0.19010416666666666" />
         <entry key="..\:/JavaPogram/XeldoProjectManagement/app/src/main/res/layout/activity_sign_up.xml" value="0.20416666666666666" />
         <entry key="..\:/JavaPogram/XeldoProjectManagement/app/src/main/res/layout/activity_splash.xml" value="0.16485507246376813" />

@@ -1,10 +1,12 @@
 package com.lex.xeldoprojectmanagement.firebase
 
+import android.app.Activity
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.toObject
+import com.lex.xeldoprojectmanagement.activities.MainActivity
 import com.lex.xeldoprojectmanagement.activities.SignInActivity
 import com.lex.xeldoprojectmanagement.activities.SignUpActivity
 import com.lex.xeldoprojectmanagement.models.Users
@@ -26,7 +28,7 @@ class FirestoreClass {
             }
     }
 
-    fun signInUser(activity: SignInActivity){
+    fun signInUser(activity: Activity){
         mFireStore.collection(Constants.USERS)
             .document(getCurrentUserId())
             .get()
@@ -35,12 +37,29 @@ class FirestoreClass {
                 run {
                     val loggedInUser = document.toObject(Users::class.java)
 
-                    if (loggedInUser != null) {
-                        activity.signInSuccess(loggedInUser)
+                    when(activity){
+                        is SignInActivity ->{
+                            if (loggedInUser != null) {
+                                activity.signInSuccess(loggedInUser)
+                            }
+                        }
+                        is MainActivity ->{
+                            activity.updateNavigationUserDetails(loggedInUser)
+                        }
                     }
+
+
                 }
             }.addOnFailureListener {
                     e ->
+                when(activity){
+                    is SignInActivity ->{
+                        activity.hideProgressDialog()
+                    }
+                    is MainActivity ->{
+                        activity.hideProgressDialog()
+                    }
+                }
                 Log.e(activity.javaClass.simpleName, "Error signing in")
             }
     }
