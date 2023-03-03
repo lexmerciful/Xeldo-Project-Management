@@ -2,7 +2,6 @@ package com.lex.xeldoprojectmanagement.activities
 
 import android.content.Intent
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -83,7 +82,7 @@ class SignInActivity : BaseActivity() {
                     if (task.isSuccessful) {
                         val user = auth.currentUser
                         Log.d("SIGN IN SUCCESS", "$user signInWithCustomToken:success")
-                        FirestoreClass().signInUser(this)
+                        FirestoreClass().loadUserData(this)
                     }else{
                         Log.w("SIGN IN FAILED", "signInWithCustomToken:failure", task.exception)
                         Toast.makeText(baseContext, "Authentication failed.",

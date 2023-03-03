@@ -3,8 +3,6 @@ package com.lex.xeldoprojectmanagement.activities
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.TextView
-import android.widget.Toast
 import androidx.core.view.GravityCompat
 import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
@@ -14,7 +12,6 @@ import com.lex.xeldoprojectmanagement.databinding.ActivityMainBinding
 import com.lex.xeldoprojectmanagement.databinding.NavHeaderMainBinding
 import com.lex.xeldoprojectmanagement.firebase.FirestoreClass
 import com.lex.xeldoprojectmanagement.models.Users
-import de.hdodenhof.circleimageview.CircleImageView
 
 class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -28,7 +25,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         setupActionBar()
         binding.navView.setNavigationItemSelectedListener(this)
 
-        FirestoreClass().signInUser(this)
+        FirestoreClass().loadUserData(this)
 
     }
 

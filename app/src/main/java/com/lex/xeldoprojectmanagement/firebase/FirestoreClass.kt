@@ -7,6 +7,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.toObject
 import com.lex.xeldoprojectmanagement.activities.MainActivity
+import com.lex.xeldoprojectmanagement.activities.ProfileActivity
 import com.lex.xeldoprojectmanagement.activities.SignInActivity
 import com.lex.xeldoprojectmanagement.activities.SignUpActivity
 import com.lex.xeldoprojectmanagement.models.Users
@@ -28,7 +29,7 @@ class FirestoreClass {
             }
     }
 
-    fun signInUser(activity: Activity){
+    fun loadUserData(activity: Activity){
         mFireStore.collection(Constants.USERS)
             .document(getCurrentUserId())
             .get()
@@ -45,6 +46,11 @@ class FirestoreClass {
                         }
                         is MainActivity ->{
                             activity.updateNavigationUserDetails(loggedInUser)
+                        }
+                        is ProfileActivity ->{
+                            if (loggedInUser != null) {
+                                activity.setUserDataInUI(loggedInUser)
+                            }
                         }
                     }
 
