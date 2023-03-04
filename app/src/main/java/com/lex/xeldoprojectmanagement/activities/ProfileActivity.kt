@@ -32,6 +32,7 @@ class ProfileActivity : BaseActivity() {
     private var mSelectedImageFileUri: Uri? = null
     private lateinit var mUserDetails: Users
     private var mProfileImageURL: String = ""
+    private lateinit var mCurrentUser: Users
 
     private lateinit var binding: ActivityProfileBinding
 
@@ -65,7 +66,8 @@ class ProfileActivity : BaseActivity() {
                 return@setOnClickListener
             }
             if (mSelectedImageFileUri != null){
-                uploadUserImage()
+                mCurrentUser = Users(getCurrentUserID())
+                uploadUserImage(mCurrentUser)
             }else{
                 showProgressDialog(resources.getString(R.string.please_wait))
                 updateUserProfileData()
@@ -175,15 +177,14 @@ class ProfileActivity : BaseActivity() {
 
     }
 
-    private fun uploadUserImage(){
+    private fun uploadUserImage(user: Users){
         showProgressDialog(resources.getString(R.string.please_wait))
 
         if (mSelectedImageFileUri != null){
 
             val sRef: StorageReference =
                 FirebaseStorage.getInstance().reference.child(
-                    "USER_IMAGE" + System.currentTimeMillis()
-                            + "." + getFileExtension(mSelectedImageFileUri))
+                    "${user.id}.${getFileExtension(mSelectedImageFileUri)}")
 
             sRef.putFile(mSelectedImageFileUri!!).addOnSuccessListener {
                 taskSnapshot ->
