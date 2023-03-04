@@ -19,6 +19,7 @@ import com.lex.xeldoprojectmanagement.R
 import com.lex.xeldoprojectmanagement.databinding.ActivityProfileBinding
 import com.lex.xeldoprojectmanagement.firebase.FirestoreClass
 import com.lex.xeldoprojectmanagement.models.Users
+import com.lex.xeldoprojectmanagement.utils.Constants
 import java.io.IOException
 
 class ProfileActivity : BaseActivity() {
@@ -29,6 +30,7 @@ class ProfileActivity : BaseActivity() {
     }
 
     private var mSelectedImageFileUri: Uri? = null
+    private lateinit var mUserDetails: Users
     private var mProfileImageURL: String = ""
 
     private lateinit var binding: ActivityProfileBinding
@@ -58,8 +60,15 @@ class ProfileActivity : BaseActivity() {
         }
 
         binding.btnUpdate.setOnClickListener {
+            if(binding.etName.text?.isEmpty() == true){
+                showErrorSnackBar("Name can't be empty")
+                return@setOnClickListener
+            }
             if (mSelectedImageFileUri != null){
                 uploadUserImage()
+            }else{
+                showProgressDialog(resources.getString(R.string.please_wait))
+                updateUserProfileData()
             }
         }
 
@@ -122,6 +131,9 @@ class ProfileActivity : BaseActivity() {
     }
 
     fun setUserDataInUI(user: Users){
+
+        mUserDetails = user
+
         Glide
             .with(this)
             .load(user.image)
@@ -137,10 +149,37 @@ class ProfileActivity : BaseActivity() {
 
     }
 
+    private fun updateUserProfileData(){
+        val userHashMap = HashMap<String, Any>()
+        var anyChangesMade = false
+
+        if (mProfileImageURL.isNotEmpty() && mProfileImageURL != mUserDetails.image){
+            userHashMap[Constants.IMAGE] = mProfileImageURL
+            anyChangesMade = true
+        }
+
+        if (binding.etName.text.toString() != mUserDetails.name){
+            userHashMap[Constants.NAME] = binding.etName.text.toString()
+            anyChangesMade = true
+        }
+
+        if (binding.etMobile.text.toString() != mUserDetails.mobile.toString() && binding.etMobile.text.toString().isNotEmpty()){
+            userHashMap[Constants.MOBILE] = binding.etMobile.text.toString().toLong()
+            anyChangesMade = true
+        }
+
+        if (anyChangesMade){
+            FirestoreClass().updateUserProfileData(this, userHashMap)
+            hideProgressDialog()
+        }
+
+    }
+
     private fun uploadUserImage(){
         showProgressDialog(resources.getString(R.string.please_wait))
 
         if (mSelectedImageFileUri != null){
+
             val sRef: StorageReference =
                 FirebaseStorage.getInstance().reference.child(
                     "USER_IMAGE" + System.currentTimeMillis()
@@ -157,6 +196,7 @@ class ProfileActivity : BaseActivity() {
                     Log.i("Downloadable Image URI", uri.toString())
 
                     mProfileImageURL = uri.toString()
+                    updateUserProfileData()
                 }
             }.addOnFailureListener {
                 exception ->
@@ -171,6 +211,11 @@ class ProfileActivity : BaseActivity() {
     private fun getFileExtension(uri: Uri?): String?{
         return MimeTypeMap.getSingleton()
             .getExtensionFromMimeType(contentResolver.getType(uri!!))
+    }
+
+    fun profileUpdateSuccess(){
+        hideProgressDialog()
+        finish()
     }
 
 }
