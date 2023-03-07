@@ -13,8 +13,12 @@
     <color name="colorAccent">#0C90F1</color>
     <color name="primary_text_color">#363A43</color>
     <color name="secondary_text_color">#7A8089</color>
+    <color name="rgGreyBorderColor">#949494</color>
 
     <color name="snackbar_error_color">#F72400</color>
     <color name="end_color_shape">#0A80F5</color>
     <color name="start_color_shape">#0BCCEB</color>
+    <color name="editBtn">#55FF49</color>
+    <color name="lightGrey">#C4C4C4</color>
+    <color name="deepGrey">#9AA2AF</color>
 </resources>

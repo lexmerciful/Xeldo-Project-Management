@@ -4,6 +4,10 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/JavaPogram/XeldoProjectManagement/app/src/main/res/drawable-anydpi/ic_dashboard.xml" value="0.1945" />
+        <entry key="..\:/JavaPogram/XeldoProjectManagement/app/src/main/res/drawable-v24/item_gender_rg_background.xml" value="0.1945" />
+        <entry key="..\:/JavaPogram/XeldoProjectManagement/app/src/main/res/drawable-v24/item_radio_group_tab_bg.xml" value="0.2115" />
+        <entry key="..\:/JavaPogram/XeldoProjectManagement/app/src/main/res/drawable-v24/item_radio_group_text_color_selector.xml" value="0.2115" />
+        <entry key="..\:/JavaPogram/XeldoProjectManagement/app/src/main/res/drawable-v24/item_selected_tab_radio_group_bg.xml" value="0.2115" />
         <entry key="..\:/JavaPogram/XeldoProjectManagement/app/src/main/res/drawable/ic_action_navigation_menu.xml" value="0.2115" />
         <entry key="..\:/JavaPogram/XeldoProjectManagement/app/src/main/res/drawable/ic_dashboard.xml" value="0.1945" />
         <entry key="..\:/JavaPogram/XeldoProjectManagement/app/src/main/res/drawable/ic_nav_sign_out.xml" value="0.1945" />
@@ -14,7 +18,7 @@
         <entry key="..\:/JavaPogram/XeldoProjectManagement/app/src/main/res/layout/activity_main.xml" value="0.17074275362318841" />
         <entry key="..\:/JavaPogram/XeldoProjectManagement/app/src/main/res/layout/activity_profile.xml" value="0.17074275362318841" />
         <entry key="..\:/JavaPogram/XeldoProjectManagement/app/src/main/res/layout/activity_sign_in.xml" value="0.19010416666666666" />
-        <entry key="..\:/JavaPogram/XeldoProjectManagement/app/src/main/res/layout/activity_sign_up.xml" value="0.20416666666666666" />
+        <entry key="..\:/JavaPogram/XeldoProjectManagement/app/src/main/res/layout/activity_sign_up.xml" value="0.21467889908256882" />
         <entry key="..\:/JavaPogram/XeldoProjectManagement/app/src/main/res/layout/activity_splash.xml" value="0.16485507246376813" />
         <entry key="..\:/JavaPogram/XeldoProjectManagement/app/src/main/res/layout/app_bar_main.xml" value="0.153125" />
         <entry key="..\:/JavaPogram/XeldoProjectManagement/app/src/main/res/layout/dialog_progress.xml" value="0.17074275362318841" />

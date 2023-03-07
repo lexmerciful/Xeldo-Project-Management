@@ -44,6 +44,17 @@
                 android:orientation="vertical"
                 android:padding="@dimen/my_profile_screen_content_padding">
 
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnEditProfile"
+                    android:layout_width="50dp"
+                    android:layout_height="30dp"
+                    android:text="@string/btn_profile_edit_text"
+                    android:textColor="@color/white"
+                    android:background="@drawable/shape_button_rounded"
+                    android:layout_marginEnd="10dp"
+                    android:elevation="10dp"
+                    android:layout_gravity="end"/>
+
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/iv_profile_user_image"
                     android:layout_width="@dimen/my_profile_user_image_size"
@@ -52,6 +63,7 @@
                     android:src="@drawable/ic_user_place_holder" />
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:boxStrokeColor="@color/colorPrimaryDark"
@@ -64,11 +76,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/name"
-                        android:textSize="@dimen/et_text_size" />
+                        android:textSize="@dimen/et_text_size"
+                        android:enabled="false"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:boxStrokeColor="@color/colorPrimaryDark"
@@ -90,6 +104,27 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/authentication_screen_til_marginTop"
+                    app:boxStrokeColor="@color/colorPrimaryDark"
+                    app:hintTextColor="@color/colorPrimaryDark">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/et_dob_profile"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:hint="@string/date_of_birth"
+                        android:inputType="text"
+                        android:textSize="@dimen/et_text_size"
+                        android:enabled="false"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilMobile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:boxStrokeColor="@color/colorPrimaryDark"
@@ -103,9 +138,48 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/mobile"
                         android:inputType="phone"
-                        android:textSize="@dimen/et_text_size" />
+                        android:textSize="@dimen/et_text_size"
+                        android:enabled="false"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <RadioGroup
+                    android:id="@+id/rg_gender_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/authentication_screen_til_marginTop"
+                    android:orientation="horizontal"
+                    android:background="@drawable/item_radio_group_tab_bg">
+
+                    <RadioButton
+                        android:id="@+id/rb_male_profile"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:button="@null"
+                        android:checked="false"
+                        android:gravity="center"
+                        android:text="@string/male"
+                        android:textColor="@color/secondary_text_color"
+                        android:textSize="@dimen/et_text_size"
+                        android:textStyle="bold"
+                        android:enabled="false"/>
+
+                    <RadioButton
+                        android:id="@+id/rb_female_profile"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:button="@null"
+                        android:checked="false"
+                        android:gravity="center"
+                        android:text="@string/female"
+                        android:textColor="@color/secondary_text_color"
+                        android:textSize="@dimen/et_text_size"
+                        android:textStyle="bold"
+                        android:enabled="false"/>
+
+                </RadioGroup>
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_update"
@@ -116,6 +190,8 @@
                     android:background="@drawable/shape_button_rounded"
                     android:foreground="?attr/selectableItemBackground"
                     android:gravity="center"
+                    android:visibility="invisible"
+                    tools:visibility="visible"
                     android:paddingTop="@dimen/btn_paddingTopBottom"
                     android:paddingBottom="@dimen/btn_paddingTopBottom"
                     android:text="@string/update"

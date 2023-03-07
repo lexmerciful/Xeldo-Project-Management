@@ -35,6 +35,11 @@ class SignInActivity : BaseActivity() {
         binding.btnSignIn.setOnClickListener {
             signInUser()
         }
+
+        binding.tvSignUp.setOnClickListener {
+            startActivity(Intent(this, SignUpActivity::class.java))
+            finish()
+        }
     }
 
     private fun setupActionBar(){
@@ -85,7 +90,7 @@ class SignInActivity : BaseActivity() {
                         FirestoreClass().loadUserData(this)
                     }else{
                         Log.w("SIGN IN FAILED", "signInWithCustomToken:failure", task.exception)
-                        Toast.makeText(baseContext, "Authentication failed.",
+                        Toast.makeText(baseContext, "Login authentication failed.",
                             Toast.LENGTH_SHORT).show()
                     }
                 }

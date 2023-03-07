@@ -7,7 +7,7 @@
     <string name="sign_in">SIGN IN</string>
     <string name="sign_up">SIGN UP</string>
 
-    <string name="sign_up_description_text">Enter your name, email and password, to register with us.</string>
+    <string name="sign_up_description_text">Enter your required account details, to register with us.</string>
     <string name="name">Name</string>
     <string name="password">Password</string>
     <string name="email">Email</string>
@@ -22,7 +22,7 @@
     <string name="nav_sign_out">Sign Out</string>
     <string name="dashboardTitle">Dashboard</string>
 
-    <string name="mobile">Mobile (e.g +2348123456789)</string>
+    <string name="mobile">Mobile</string>
     <string name="update">UPDATE</string>
     <string name="my_profile">My Profile</string>
 
@@ -44,4 +44,13 @@
     <string name="cancel">"Cancel"</string>
     <string name="add">ADD</string>
     <string name="search_member">Search Member</string>
+    <string name="btn_profile_edit_text">EDIT</string>
+    <string name="date_of_birth">Date of birth</string>
+    <string name="male">MALE</string>
+    <string name="female">FEMALE</string>
+    <string name="accept_terms_and_conditions"><![CDATA[I Accept To The Terms & Conditions]]></string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="login">\u0020Login</string>
+    <string name="dont_have_an_account">Don\'t have an account?</string>
+    <string name="sign_up_text">\u0020Sign Up</string>
 </resources>

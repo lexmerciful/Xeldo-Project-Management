@@ -4,15 +4,19 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.View
 import android.webkit.MimeTypeMap
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DecodeFormat
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.lex.xeldoprojectmanagement.R
@@ -34,6 +38,7 @@ class ProfileActivity : BaseActivity() {
     private var mProfileImageURL: String = ""
     private lateinit var mCurrentUser: Users
 
+    private var editProfile = false
     private lateinit var binding: ActivityProfileBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,18 +51,23 @@ class ProfileActivity : BaseActivity() {
         FirestoreClass().loadUserData(this)
 
         binding.ivProfileUserImage.setOnClickListener {
-
-            if (ContextCompat.checkSelfPermission(
-                    this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                == PackageManager.PERMISSION_GRANTED){
-                showImageChooser()
-            }else{
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
-                    READ_STORAGE_PERMISSION_CODE)
+            if (editProfile){
+                if (ContextCompat.checkSelfPermission(
+                        this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED){
+                    showImageChooser()
+                }else{
+                    ActivityCompat.requestPermissions(
+                        this,
+                        arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                        READ_STORAGE_PERMISSION_CODE)
+                }
             }
 
+        }
+
+        binding.btnEditProfile.setOnClickListener {
+            editProfileSet()
         }
 
         binding.btnUpdate.setOnClickListener {
@@ -74,6 +84,22 @@ class ProfileActivity : BaseActivity() {
             }
         }
 
+    }
+
+    private fun editProfileSet() {
+        if (!editProfile) {
+            binding.btnEditProfile.setTextColor(ContextCompat.getColor(this, R.color.editBtn))
+            binding.etName.isEnabled = true
+            binding.etMobile.isEnabled = true
+            binding.btnUpdate.visibility = View.VISIBLE
+            editProfile = true
+        } else {
+            binding.btnEditProfile.setTextColor(ContextCompat.getColor(this, R.color.white))
+            binding.etName.isEnabled = false
+            binding.etMobile.isEnabled = false
+            binding.btnUpdate.visibility = View.GONE
+            editProfile = false
+        }
     }
 
     private fun setupActionBar(){
@@ -123,6 +149,7 @@ class ProfileActivity : BaseActivity() {
                     .with(this@ProfileActivity)
                     .load(mSelectedImageFileUri)
                     .circleCrop()
+                    .format(DecodeFormat.PREFER_RGB_565)
                     .placeholder(R.drawable.ic_user_place_holder)
                     .into(binding.ivProfileUserImage)
             }catch (e: IOException){
@@ -145,8 +172,19 @@ class ProfileActivity : BaseActivity() {
 
         binding.etName.setText(user.name)
         binding.etEmail.setText(user.email)
+        binding.etDobProfile.setText(user.dob)
         if (user.mobile != 0L){
             binding.etMobile.setText(user.mobile.toString())
+        }
+        if (user.gender == "MALE"){
+            binding.rbMaleProfile.isChecked = true
+            binding.rbFemaleProfile.visibility = View.GONE
+        }else if (user.gender == "FEMALE"){
+            binding.rbFemaleProfile.isChecked = true
+            binding.rbMaleProfile.visibility = View.GONE
+        }else{
+            binding.rbMaleProfile.isChecked = false
+            binding.rbFemaleProfile.isChecked = false
         }
 
     }
@@ -173,8 +211,9 @@ class ProfileActivity : BaseActivity() {
         if (anyChangesMade){
             FirestoreClass().updateUserProfileData(this, userHashMap)
             hideProgressDialog()
+        }else{
+            hideProgressDialog()
         }
-
     }
 
     private fun uploadUserImage(user: Users){

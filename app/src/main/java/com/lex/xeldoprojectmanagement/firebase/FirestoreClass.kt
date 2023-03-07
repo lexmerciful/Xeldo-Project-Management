@@ -26,6 +26,7 @@ class FirestoreClass {
                 activity.userRegisteredSuccess()
             }.addOnFailureListener {
                 e ->
+                activity.hideProgressDialog()
                 Log.e(activity.javaClass.simpleName, "Error registering account")
             }
     }
