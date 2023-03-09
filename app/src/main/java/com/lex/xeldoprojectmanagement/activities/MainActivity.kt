@@ -1,7 +1,9 @@
 package com.lex.xeldoprojectmanagement.activities
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import androidx.core.view.GravityCompat
 import com.bumptech.glide.Glide
@@ -15,6 +17,10 @@ import com.lex.xeldoprojectmanagement.models.Users
 
 class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
 
+    companion object{
+        const val MY_PROFILE_REQUEST_CODE = 11
+    }
+
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,6 +30,10 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         setupActionBar()
         binding.navView.setNavigationItemSelectedListener(this)
+
+        binding.mainInclude.fabCreateBoard.setOnClickListener {
+            startActivity(Intent(this,CreateBoardActivity::class.java))
+        }
 
         FirestoreClass().loadUserData(this)
 
@@ -55,10 +65,21 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK && requestCode == MY_PROFILE_REQUEST_CODE){
+            FirestoreClass().loadUserData(this)
+        }else{
+            Log.e("Cancelled: ","CANCELLED")
+        }
+    }
+
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId){
             R.id.nav_my_profile ->{
-                startActivity(Intent(this, ProfileActivity::class.java))
+                startActivityForResult(Intent(this,
+                    ProfileActivity::class.java),
+                    MY_PROFILE_REQUEST_CODE)
             }
 
             R.id.nav_sign_out ->{
