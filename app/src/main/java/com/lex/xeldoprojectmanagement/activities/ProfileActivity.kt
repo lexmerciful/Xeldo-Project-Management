@@ -4,7 +4,6 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -12,9 +11,9 @@ import android.util.Log
 import android.view.View
 import android.webkit.MimeTypeMap
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DecodeFormat
 import com.google.firebase.storage.FirebaseStorage
@@ -30,7 +29,7 @@ class ProfileActivity : BaseActivity() {
 
     companion object{
         private const val READ_STORAGE_PERMISSION_CODE = 1
-        private const val PICK_IMAGE_REQUEST_CODE = 2
+        //private const val PICK_IMAGE_REQUEST_CODE = 2
     }
 
     private var mSelectedImageFileUri: Uri? = null
@@ -136,12 +135,13 @@ class ProfileActivity : BaseActivity() {
 
     private fun showImageChooser(){
         val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        startActivityForResult(galleryIntent, PICK_IMAGE_REQUEST_CODE)
+        resultLauncher.launch(galleryIntent)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK && requestCode == PICK_IMAGE_REQUEST_CODE && data!!.data != null){
+    private var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        val data: Intent? = result.data
+        if (result.resultCode == Activity.RESULT_OK && data!!.data != null) {
+            // There are no request codes
             mSelectedImageFileUri = data.data
 
             try {
@@ -152,10 +152,9 @@ class ProfileActivity : BaseActivity() {
                     .format(DecodeFormat.PREFER_RGB_565)
                     .placeholder(R.drawable.ic_user_place_holder)
                     .into(binding.ivProfileUserImage)
-            }catch (e: IOException){
+            } catch (e: IOException) {
                 e.printStackTrace()
             }
-
         }
     }
 

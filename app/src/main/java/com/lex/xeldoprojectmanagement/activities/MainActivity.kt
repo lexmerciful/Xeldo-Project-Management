@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.GravityCompat
 import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
@@ -18,7 +19,7 @@ import com.lex.xeldoprojectmanagement.models.Users
 class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     companion object{
-        const val MY_PROFILE_REQUEST_CODE = 11
+        //const val MY_PROFILE_REQUEST_CODE = 11
     }
 
     private lateinit var binding: ActivityMainBinding
@@ -65,21 +66,12 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK && requestCode == MY_PROFILE_REQUEST_CODE){
-            FirestoreClass().loadUserData(this)
-        }else{
-            Log.e("Cancelled: ","CANCELLED")
-        }
-    }
-
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId){
             R.id.nav_my_profile ->{
-                startActivityForResult(Intent(this,
-                    ProfileActivity::class.java),
-                    MY_PROFILE_REQUEST_CODE)
+                val intent = (Intent(this,
+                    ProfileActivity::class.java))
+                resultLauncher.launch(intent)
             }
 
             R.id.nav_sign_out ->{
@@ -93,6 +85,16 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         }
         binding.drawerLayout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    private var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            // There are no request codes
+            //val data: Intent? = result.data
+            FirestoreClass().loadUserData(this)
+        }else{
+            Log.e("Cancelled: ","CANCELLED")
+        }
     }
 
     fun updateNavigationUserDetails(user: Users?) {
