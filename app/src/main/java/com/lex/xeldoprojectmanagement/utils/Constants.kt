@@ -13,4 +13,7 @@ object Constants {
 
     const val ASSIGNED_TO: String = "assignedTo"
 
+    const val PROFILE = "profile"
+    const val CREATE_BOARD = "createBoard"
+
 }

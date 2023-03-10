@@ -29,6 +29,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     private lateinit var mUsername: String
     private lateinit var binding: ActivityMainBinding
+    private var callingActivity = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -41,7 +42,8 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         binding.mainInclude.fabCreateBoard.setOnClickListener {
             val intent = Intent(this,CreateBoardActivity::class.java)
             intent.putExtra(Constants.NAME, mUsername)
-            startActivity(intent)
+            callingActivity = Constants.CREATE_BOARD
+            resultLauncher.launch(intent)
         }
 
         FirestoreClass().loadUserData(this, true)
@@ -97,6 +99,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             R.id.nav_my_profile ->{
                 val intent = (Intent(this,
                     ProfileActivity::class.java))
+                callingActivity = Constants.PROFILE
                 resultLauncher.launch(intent)
             }
 
@@ -114,11 +117,14 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     private var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
+        if (result.resultCode == Activity.RESULT_OK && callingActivity == Constants.PROFILE) {
             // There are no request codes
             //val data: Intent? = result.data
             FirestoreClass().loadUserData(this)
-        }else{
+        }else if (result.resultCode == Activity.RESULT_OK && callingActivity == Constants.CREATE_BOARD){
+            FirestoreClass().getBoardsList(this)
+        }
+        else{
             Log.e("Cancelled: ","CANCELLED")
         }
     }
