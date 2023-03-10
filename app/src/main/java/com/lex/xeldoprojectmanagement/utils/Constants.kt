@@ -11,4 +11,6 @@ object Constants {
     const val GENDER: String = "gender"
     const val DOB: String = "dob"
 
+    const val ASSIGNED_TO: String = "assignedTo"
+
 }
