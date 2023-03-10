@@ -7,10 +7,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.toObject
-import com.lex.xeldoprojectmanagement.activities.MainActivity
-import com.lex.xeldoprojectmanagement.activities.ProfileActivity
-import com.lex.xeldoprojectmanagement.activities.SignInActivity
-import com.lex.xeldoprojectmanagement.activities.SignUpActivity
+import com.lex.xeldoprojectmanagement.activities.*
+import com.lex.xeldoprojectmanagement.models.Board
 import com.lex.xeldoprojectmanagement.models.Users
 import com.lex.xeldoprojectmanagement.utils.Constants
 
@@ -85,6 +83,21 @@ class FirestoreClass {
                     }
                 }
                 Log.e(activity.javaClass.simpleName, "Error signing in")
+            }
+    }
+
+    fun createBoard(activity: CreateBoardActivity, board: Board){
+        mFireStore.collection(Constants.BOARDS)
+            .document()
+            .set(board, SetOptions.merge())
+            .addOnSuccessListener {
+                Log.e(activity.javaClass.simpleName, "Board created successfully")
+                Toast.makeText(activity, "Board created successfully", Toast.LENGTH_SHORT).show()
+                activity.boardCreatedSuccessfully()
+            }.addOnFailureListener {
+                    exception ->
+                activity.hideProgressDialog()
+                Log.e(activity.javaClass.simpleName, "Error creating board.",exception)
             }
     }
 

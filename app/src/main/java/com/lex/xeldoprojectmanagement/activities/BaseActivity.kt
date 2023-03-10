@@ -1,10 +1,15 @@
 package com.lex.xeldoprojectmanagement.activities
 
+import android.app.Activity
 import android.app.Dialog
+import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.provider.MediaStore
+import android.webkit.MimeTypeMap
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -64,6 +69,23 @@ open class BaseActivity : AppCompatActivity() {
         val snackBarView = snackBar.view
         snackBarView.setBackgroundColor(ContextCompat.getColor(this, R.color.snackbar_error_color))
         snackBar.show()
+    }
+
+    fun showImageChooser(activity: Activity){
+        val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        if (activity is ProfileActivity){
+            activity.resultLauncher.launch(galleryIntent)
+        }
+        if (activity is CreateBoardActivity){
+            activity.resultLauncher.launch(galleryIntent)
+        }
+
+    }
+
+    //To get the image file extension
+    fun getFileExtension(activity: Activity, uri: Uri?): String?{
+        return MimeTypeMap.getSingleton()
+            .getExtensionFromMimeType(activity.contentResolver.getType(uri!!))
     }
 
 }

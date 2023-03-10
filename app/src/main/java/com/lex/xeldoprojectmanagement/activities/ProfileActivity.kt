@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.View
 import android.webkit.MimeTypeMap
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -28,6 +29,7 @@ import java.io.IOException
 class ProfileActivity : BaseActivity() {
 
     companion object{
+        //lateinit var resultLauncher: ActivityResultLauncher<Intent>
         private const val READ_STORAGE_PERMISSION_CODE = 1
         //private const val PICK_IMAGE_REQUEST_CODE = 2
     }
@@ -54,7 +56,7 @@ class ProfileActivity : BaseActivity() {
                 if (ContextCompat.checkSelfPermission(
                         this, Manifest.permission.READ_EXTERNAL_STORAGE)
                     == PackageManager.PERMISSION_GRANTED){
-                    showImageChooser()
+                    showImageChooser(this)
                 }else{
                     ActivityCompat.requestPermissions(
                         this,
@@ -124,7 +126,7 @@ class ProfileActivity : BaseActivity() {
         if (requestCode == READ_STORAGE_PERMISSION_CODE){
             if (grantResults.isNotEmpty()
                 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                showImageChooser()
+                showImageChooser(this)
             }
         }else{
             Toast.makeText(this,
@@ -133,12 +135,7 @@ class ProfileActivity : BaseActivity() {
         }
     }
 
-    private fun showImageChooser(){
-        val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        resultLauncher.launch(galleryIntent)
-    }
-
-    private var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+    var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         val data: Intent? = result.data
         if (result.resultCode == Activity.RESULT_OK && data!!.data != null) {
             // There are no request codes
@@ -222,7 +219,7 @@ class ProfileActivity : BaseActivity() {
 
             val sRef: StorageReference =
                 FirebaseStorage.getInstance().reference.child(
-                    "${user.id}.${getFileExtension(mSelectedImageFileUri)}")
+                    "${user.id}.${getFileExtension(this, mSelectedImageFileUri)}")
 
             sRef.putFile(mSelectedImageFileUri!!).addOnSuccessListener {
                 taskSnapshot ->
@@ -244,12 +241,6 @@ class ProfileActivity : BaseActivity() {
                 hideProgressDialog()
             }
         }
-    }
-
-    //To get the image file extension
-    private fun getFileExtension(uri: Uri?): String?{
-        return MimeTypeMap.getSingleton()
-            .getExtensionFromMimeType(contentResolver.getType(uri!!))
     }
 
     fun profileUpdateSuccess(){

@@ -15,6 +15,7 @@ import com.lex.xeldoprojectmanagement.databinding.ActivityMainBinding
 import com.lex.xeldoprojectmanagement.databinding.NavHeaderMainBinding
 import com.lex.xeldoprojectmanagement.firebase.FirestoreClass
 import com.lex.xeldoprojectmanagement.models.Users
+import com.lex.xeldoprojectmanagement.utils.Constants
 
 class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -22,6 +23,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         //const val MY_PROFILE_REQUEST_CODE = 11
     }
 
+    private lateinit var mUsername: String
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,7 +35,9 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         binding.navView.setNavigationItemSelectedListener(this)
 
         binding.mainInclude.fabCreateBoard.setOnClickListener {
-            startActivity(Intent(this,CreateBoardActivity::class.java))
+            val intent = Intent(this,CreateBoardActivity::class.java)
+            intent.putExtra(Constants.NAME, mUsername)
+            startActivity(intent)
         }
 
         FirestoreClass().loadUserData(this)
@@ -100,6 +104,8 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     fun updateNavigationUserDetails(user: Users?) {
         val headerView = binding.navView.getHeaderView(0)
         val headerBinding = NavHeaderMainBinding.bind(headerView)
+        mUsername = user!!.name
+
         Glide
             .with(this)
             .load(user!!.image)
