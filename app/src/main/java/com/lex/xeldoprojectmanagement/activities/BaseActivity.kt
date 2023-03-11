@@ -12,6 +12,7 @@ import android.provider.MediaStore
 import android.webkit.MimeTypeMap
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
@@ -26,6 +27,21 @@ open class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_base)
+    }
+
+    fun setupActionBar(toolbar: Toolbar, title: String){
+        setSupportActionBar(toolbar)
+        supportActionBar!!.title = title
+
+        val actionBar = supportActionBar
+        if (actionBar != null){
+            actionBar.setDisplayHomeAsUpEnabled(true)
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_white_arrow_back_24)
+        }
+
+        toolbar.setNavigationOnClickListener {
+            onBackPressed()
+        }
     }
 
     fun showProgressDialog(text: String){

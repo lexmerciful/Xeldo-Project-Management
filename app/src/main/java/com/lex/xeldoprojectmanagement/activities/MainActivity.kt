@@ -62,6 +62,16 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
             val adapter = BoardItemAdapter(this, boardsList)
             binding.mainInclude.mainContentInclude.rvBoardsList.adapter = adapter
+
+            adapter.setOnClickListener(object: BoardItemAdapter.OnClickListener{
+                override fun onClick(position: Int, model: Board) {
+                    val intent = Intent(this@MainActivity, TaskListActivity::class.java)
+                    intent.putExtra(Constants.DOCUMENT_ID, model.documentId)
+                    startActivity(intent)
+                }
+
+            })
+
         }else{
             binding.mainInclude.mainContentInclude.rvBoardsList.visibility = View.GONE
             binding.mainInclude.mainContentInclude.tvNoBoardsAvailable.visibility = View.VISIBLE

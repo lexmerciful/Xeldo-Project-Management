@@ -12,6 +12,7 @@ object Constants {
     const val DOB: String = "dob"
 
     const val ASSIGNED_TO: String = "assignedTo"
+    const val DOCUMENT_ID: String = "documentId"
 
     const val PROFILE = "profile"
     const val CREATE_BOARD = "createBoard"

@@ -42,7 +42,7 @@ class CreateBoardActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        setupActionBar()
+        setupActionBar(binding.toolbarCreateBoardActivity, resources.getString(R.string.create_board_title))
 
         if (intent.hasExtra(Constants.NAME)){
             mUsername = intent.getStringExtra(Constants.NAME).toString()
@@ -122,22 +122,6 @@ class CreateBoardActivity : BaseActivity() {
         setResult(Activity.RESULT_OK)
         finish()
     }
-
-    private fun setupActionBar(){
-        setSupportActionBar(binding.toolbarCreateBoardActivity)
-        binding.toolbarCreateBoardActivity.title = resources.getString(R.string.create_board_title)
-
-        val actionBar = supportActionBar
-        if (actionBar != null){
-            actionBar.setDisplayHomeAsUpEnabled(true)
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_white_arrow_back_24)
-        }
-
-        binding.toolbarCreateBoardActivity.setNavigationOnClickListener {
-            onBackPressed()
-        }
-    }
-
 
     override fun onRequestPermissionsResult(
         requestCode: Int,

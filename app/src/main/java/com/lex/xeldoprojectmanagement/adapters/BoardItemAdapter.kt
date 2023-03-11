@@ -47,5 +47,9 @@ private var list: ArrayList<Board>): RecyclerView.Adapter<RecyclerView.ViewHolde
         fun onClick(position: Int, model: Board)
     }
 
+    fun setOnClickListener(onClickListener: OnClickListener){
+        this.onClickListener = onClickListener
+    }
+
     private class MyViewHolder(val binding:ItemBoardBinding): RecyclerView.ViewHolder(binding.root)
 }
