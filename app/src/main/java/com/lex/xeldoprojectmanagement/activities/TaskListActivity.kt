@@ -16,6 +16,7 @@ class TaskListActivity : BaseActivity() {
     private lateinit var binding: ActivityTaskListBinding
 
     private var boardDocumentId = ""
+    private lateinit var mBoardDetails: Board
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,8 +32,10 @@ class TaskListActivity : BaseActivity() {
     }
 
     fun boardDetails(board: Board){
+        mBoardDetails = board
+
         hideProgressDialog()
-        setupActionBar(binding.toolbarTaskListActivity, board.name)
+        setupActionBar(binding.toolbarTaskListActivity, mBoardDetails.name)
 
         val addTaskList = Task(resources.getString(R.string.add_list))
         board.taskList.add(addTaskList)
@@ -42,5 +45,22 @@ class TaskListActivity : BaseActivity() {
 
         val adapter = TaskListItemsAdapter(this, board.taskList)
         binding.rvTaskList.adapter = adapter
+    }
+
+    fun addUpdateTaskListSuccess(){
+        hideProgressDialog()
+
+        showProgressDialog(resources.getString(R.string.finalizing))
+        FirestoreClass().getBoardDetails(this, mBoardDetails.documentId)
+    }
+
+    fun createTaskList(taskListName: String){
+        val task = Task(taskListName, FirestoreClass().getCurrentUserId())
+        mBoardDetails.taskList.add(0, task)
+        mBoardDetails.taskList.removeAt(mBoardDetails.taskList.size - 1)
+
+        showProgressDialog(resources.getString(R.string.please_wait))
+
+        FirestoreClass().addUpdateTaskList(this, mBoardDetails)
     }
 }

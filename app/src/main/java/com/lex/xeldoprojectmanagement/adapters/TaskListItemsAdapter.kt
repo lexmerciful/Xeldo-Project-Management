@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.lex.xeldoprojectmanagement.R
+import com.lex.xeldoprojectmanagement.activities.TaskListActivity
 import com.lex.xeldoprojectmanagement.databinding.ItemTaskBinding
 import com.lex.xeldoprojectmanagement.models.Task
 
@@ -33,6 +35,29 @@ open class TaskListItemsAdapter(
             }else{
                 holder.binding.tvAddTaskList.visibility = View.GONE
                 holder.binding.llTaskItem.visibility = View.VISIBLE
+            }
+
+            holder.binding.tvTaskListTitle.text = model.title
+            holder.binding.tvAddTaskList.setOnClickListener {
+                holder.binding.tvAddTaskList.visibility = View.GONE
+                holder.binding.cvAddTaskListName.visibility = View.VISIBLE
+            }
+
+            holder.binding.ibCloseListName.setOnClickListener {
+                holder.binding.tvAddTaskList.visibility = View.VISIBLE
+                holder.binding.cvAddTaskListName.visibility = View.GONE
+            }
+
+            holder.binding.ibDoneListName.setOnClickListener {
+                val listName = holder.binding.etTaskListName.text.toString()
+                
+                    if (context is TaskListActivity){
+                        if (listName.isNotEmpty()){
+                            context.createTaskList(listName)
+                    }else{
+                        context.showErrorSnackBar(context.getString(R.string.please_enter_list_name))
+                    }
+                }
             }
         }
     }
