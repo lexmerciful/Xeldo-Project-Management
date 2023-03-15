@@ -59,7 +59,8 @@
                     android:autofillHints="@string/hint_list_name"
                     android:hint="@string/hint_list_name"
                     android:imeOptions="actionDone"
-                    style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+                    android:textSize="16sp"
+                    style="@style/Task_List_Edit_Text_Style"
                     android:inputType="text" />
 
                 <ImageButton
