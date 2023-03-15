@@ -1,6 +1,5 @@
 package com.lex.xeldoprojectmanagement.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lex.xeldoprojectmanagement.R
@@ -8,6 +7,7 @@ import com.lex.xeldoprojectmanagement.adapters.TaskListItemsAdapter
 import com.lex.xeldoprojectmanagement.databinding.ActivityTaskListBinding
 import com.lex.xeldoprojectmanagement.firebase.FirestoreClass
 import com.lex.xeldoprojectmanagement.models.Board
+import com.lex.xeldoprojectmanagement.models.Card
 import com.lex.xeldoprojectmanagement.models.Task
 import com.lex.xeldoprojectmanagement.utils.Constants
 
@@ -78,6 +78,29 @@ class TaskListActivity : BaseActivity() {
     fun deleteTaskList(position: Int){
         mBoardDetails.taskList.removeAt(position)
         mBoardDetails.taskList.removeAt(mBoardDetails.taskList.size - 1)
+
+        showProgressDialog(resources.getString(R.string.please_wait))
+
+        FirestoreClass().addUpdateTaskList(this, mBoardDetails)
+    }
+
+    fun addCardToTaskList(position: Int, cardName: String){
+        mBoardDetails.taskList.removeAt(mBoardDetails.taskList.size - 1)
+
+        val cardAssignedUsersArrayList: ArrayList<String> = ArrayList()
+        cardAssignedUsersArrayList.add(FirestoreClass().getCurrentUserId())
+
+        val card = Card(cardName, FirestoreClass().getCurrentUserId(), cardAssignedUsersArrayList)
+        val cardList = mBoardDetails.taskList[position].cards
+        cardList.add(card)
+
+        val task = Task(
+            mBoardDetails.taskList[position].title,
+            mBoardDetails.taskList[position].createdBy,
+            cardList
+        )
+
+        mBoardDetails.taskList[position] = task
 
         showProgressDialog(resources.getString(R.string.please_wait))
 

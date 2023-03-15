@@ -56,4 +56,5 @@
     <string name="please_enter_list_name">Please Enter List Name</string>
     <string name="adding_task">Adding task</string>
     <string name="finalizing">Finalizing</string>
+    <string name="please_enter_card_name">Please Enter Card Name</string>
 </resources>

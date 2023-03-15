@@ -92,6 +92,28 @@ open class TaskListItemsAdapter(
             holder.binding.ibDeleteList.setOnClickListener {
                 alertDialogForDeleteList(position, model.title)
             }
+
+            holder.binding.tvAddCard.setOnClickListener {
+                holder.binding.cvAddCard.visibility = View.VISIBLE
+                holder.binding.tvAddCard.visibility = View.GONE
+            }
+
+            holder.binding.ibCloseCardName.setOnClickListener {
+                holder.binding.cvAddCard.visibility = View.GONE
+                holder.binding.tvAddCard.visibility = View.VISIBLE
+            }
+
+            holder.binding.ibDoneCardName.setOnClickListener {
+                val cardName = holder.binding.etCardName.text.toString()
+
+                if (context is TaskListActivity){
+                    if (cardName.isNotEmpty()){
+                        context.addCardToTaskList(position, cardName)
+                    }else{
+                        context.showErrorSnackBar(context.getString(R.string.please_enter_card_name))
+                    }
+                }
+            }
         }
     }
 
