@@ -47,6 +47,7 @@ class SignUpActivity : BaseActivity() {
                 cal.get(Calendar.MONTH),
                 cal.get(Calendar.DAY_OF_MONTH))
 
+            //To set max date and ensure users are not allowed to pick future dates
             dpd.datePicker.maxDate = System.currentTimeMillis() - 86400000
             dpd.show()
         }
@@ -65,6 +66,9 @@ class SignUpActivity : BaseActivity() {
         }
     }
 
+    /**
+     * Fuction to set DateSetListener for DOB picker
+     */
     private fun dateSetupListener() {
         dateSetListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
             cal.set(Calendar.YEAR, year)
@@ -102,12 +106,18 @@ class SignUpActivity : BaseActivity() {
         }
     }
 
+    /**
+     * Fuction to set Date format and update DOB edittext
+     */
     private fun updateDateInView(){
         val myFormat = "dd-MM-yyyy"
         val sdf = SimpleDateFormat(myFormat, Locale.getDefault())
         binding.etDob.setText(sdf.format(cal.time).toString())
     }
 
+    /**
+     * Function to be called the user is registered successfully and entry is made in the firestore database.
+     */
     fun userRegisteredSuccess(){
         hideProgressDialog()
         Toast.makeText(this,
@@ -116,7 +126,11 @@ class SignUpActivity : BaseActivity() {
         finish()
     }
 
+    /**
+     * A function to register a user to our app using the Firebase.
+     */
     private fun registerUser(){
+        // Get the text and trim the space
         val name = binding.etName.text.toString().trim()
         val email = binding.etEmail.text.toString().trim()
         val dob = binding.etDob.text.toString()
@@ -131,9 +145,12 @@ class SignUpActivity : BaseActivity() {
                 task ->
 
                     if (task.isSuccessful){
+                        // Firebase registered user
                         val firebaseUser: FirebaseUser = task.result!!.user!!
+                        // Registered Email
                         val registeredEmail = firebaseUser.email!!
                         val user = Users(firebaseUser.uid, name, registeredEmail, dob = dob, gender = gender)
+                        // calling the registerUser function of FirestoreClass to make an entry in the database.
                         FirestoreClass().registerUser(this, user)
                     }else{
                         hideProgressDialog()
@@ -144,6 +161,9 @@ class SignUpActivity : BaseActivity() {
         }
     }
 
+    /**
+     * Function to validate the entries of a new user.
+     */
     private fun validateForm(name: String, email:String, dob: String, gender: String, password: String, confirmPassword: String, termsCondition: CheckBox): Boolean{
         var yearCheck = 0
         if (dob.isNotEmpty()){

@@ -69,17 +69,26 @@ class SignInActivity : BaseActivity() {
         }
     }
 
+    /**
+     * Function to get the user details from the firestore database after authentication.
+     */
     fun signInSuccess(users: Users){
         hideProgressDialog()
         startActivity(Intent(this@SignInActivity, MainActivity::class.java))
         finish()
     }
 
+    /**
+     * Function for Sign-In using the registered user using the email and password.
+     */
     private fun signInUser(){
+        // Get the text and trim the space
         val email = binding.etEmailSignIn.text.toString().trim()
         val password = binding.etPasswordSignIn.text.toString()
         if (validateForm(email, password)){
             showProgressDialog(resources.getString(R.string.please_wait))
+
+            // Sign-In using FirebaseAuth
             auth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
                 task ->
                 run {
@@ -87,6 +96,8 @@ class SignInActivity : BaseActivity() {
                     if (task.isSuccessful) {
                         val user = auth.currentUser
                         Log.d("SIGN IN SUCCESS", "$user signInWithCustomToken:success")
+
+                        // Calling the FirestoreClass signInUser function to get the data of user from database.
                         FirestoreClass().loadUserData(this)
                     }else{
                         Log.w("SIGN IN FAILED", "signInWithCustomToken:failure", task.exception)
@@ -98,6 +109,9 @@ class SignInActivity : BaseActivity() {
         }
     }
 
+    /**
+     * Function to validate the entries of user.
+     */
     private fun validateForm(email:String, password: String): Boolean{
         return when {
             TextUtils.isEmpty(email) || !email.contains("@") ->{

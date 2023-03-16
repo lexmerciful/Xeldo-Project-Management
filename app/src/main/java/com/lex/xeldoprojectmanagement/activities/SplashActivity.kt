@@ -34,13 +34,15 @@ class SplashActivity : AppCompatActivity() {
             )
         }
 
+        // Get the font file from the assets folder and set it to the title textView.
         val typeFace: Typeface = Typeface.createFromAsset(assets, "ethnocentric rg.otf")
         val tvAppName: TextView = findViewById(R.id.tvAppName)
         tvAppName.typeface = typeFace
 
 
         Handler(Looper.getMainLooper()).postDelayed({
-
+            // Here if the user is signed in and not signed out again from the app. So next time while coming into the app
+            // we will redirect him to MainScreen or else to the Intro Screen as it was before.
             val currentUserID = FirestoreClass().getCurrentUserId()
 
             if (currentUserID.isNotEmpty()){
@@ -49,6 +51,6 @@ class SplashActivity : AppCompatActivity() {
                 startActivity(Intent(this, IntroActivity::class.java))
             }
             finish()
-        }, 2500)
+        }, 2500)// Here we pass the delay time in milliSeconds after which the splash activity will disappear
     }
 }

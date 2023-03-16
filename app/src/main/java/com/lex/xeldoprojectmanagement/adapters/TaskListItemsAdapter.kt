@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lex.xeldoprojectmanagement.R
 import com.lex.xeldoprojectmanagement.activities.TaskListActivity
@@ -114,6 +115,12 @@ open class TaskListItemsAdapter(
                     }
                 }
             }
+
+            holder.binding.rvCardList.layoutManager = LinearLayoutManager(context)
+            holder.binding.rvCardList.setHasFixedSize(true)
+
+            val adapter = CardListItemsAdapter(context, model.cards)
+            holder.binding.rvCardList.adapter = adapter
         }
     }
 
