@@ -16,6 +16,7 @@ object Constants {
     const val Task_LIST: String = "taskList"
 
     const val BOARD_DETAIL: String = "board_detail"
+    const val ID: String = "id"
 
     const val PROFILE = "profile"
     const val CREATE_BOARD = "createBoard"
