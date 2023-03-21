@@ -1,7 +1,6 @@
 package com.lex.xeldoprojectmanagement.activities
 
 import android.app.Dialog
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -20,6 +19,7 @@ class MembersActivity : BaseActivity() {
     private lateinit var binding: ActivityMembersBinding
 
     private lateinit var mBoardDetails: Board
+    private lateinit var mAssignedMembersList: ArrayList<Users>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityMembersBinding.inflate(layoutInflater)
@@ -37,6 +37,8 @@ class MembersActivity : BaseActivity() {
     }
 
     fun setupMembersListAdapter(list: ArrayList<Users>){
+        //Initialize mAssignedMembersList by assigning to list gotten from the firebase class
+        mAssignedMembersList = list
         hideProgressDialog()
 
         binding.rvMembersList.layoutManager = LinearLayoutManager(this)
@@ -44,6 +46,11 @@ class MembersActivity : BaseActivity() {
 
         val adapter = MembersListItemsAdapter(this, list)
         binding.rvMembersList.adapter = adapter
+    }
+
+    fun memberDetails(user: Users){
+        mBoardDetails.assignedTo.add(user.id)
+        FirestoreClass().assignMemberToBoard(this, mBoardDetails, user)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -70,6 +77,8 @@ class MembersActivity : BaseActivity() {
 
             if (email.isNotEmpty()){
                 dialog.dismiss()
+                showProgressDialog(resources.getString(R.string.please_wait))
+                FirestoreClass().getMemberDetails(this, email)
 
             }else{
                 showErrorSnackBar(resources.getString(R.string.please_enter_member_email))
@@ -79,5 +88,16 @@ class MembersActivity : BaseActivity() {
             dialog.dismiss()
         }
         dialog.show()
+    }
+
+    fun memberAssignSuccess(user: Users){
+        hideProgressDialog()
+        mAssignedMembersList.add(user)
+
+        /**
+         * To update the members list with the new added member,
+         * we call the setupMemberListAdapter with the new mAssignedMemberList
+         */
+        setupMembersListAdapter(mAssignedMembersList)
     }
 }

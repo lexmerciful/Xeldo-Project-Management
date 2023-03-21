@@ -130,7 +130,7 @@
     <dimen name="member_dialog_divider_marginTopBottom">3dp</dimen>
     <dimen name="member_dialog_til_email_marginTop">10dp</dimen>
     <dimen name="member_dialog_action_layout_height">40dp</dimen>
-    <dimen name="member_dialog_action_layout_marginTop">10dp</dimen>
+    <dimen name="member_dialog_action_layout_marginTop">20dp</dimen>
     <dimen name="member_dialog_action_button_padding">10dp</dimen>
     <dimen name="member_dialog_action_button_text_size">16sp</dimen>
 
