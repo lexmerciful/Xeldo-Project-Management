@@ -140,4 +140,8 @@ class TaskListActivity : BaseActivity() {
 
         FirestoreClass().addUpdateTaskList(this, mBoardDetails)
     }
+
+    fun cardDetails(tastListPosition: Int, cardPosition: Int){
+        startActivity(Intent(this, CardDetailsActivity::class.java))
+    }
 }
