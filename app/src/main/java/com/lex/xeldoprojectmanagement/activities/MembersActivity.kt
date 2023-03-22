@@ -1,5 +1,6 @@
 package com.lex.xeldoprojectmanagement.activities
 
+import android.app.Activity
 import android.app.Dialog
 import android.os.Bundle
 import android.view.Menu
@@ -20,6 +21,7 @@ class MembersActivity : BaseActivity() {
 
     private lateinit var mBoardDetails: Board
     private lateinit var mAssignedMembersList: ArrayList<Users>
+    private var anyChangesMade = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityMembersBinding.inflate(layoutInflater)
@@ -90,8 +92,16 @@ class MembersActivity : BaseActivity() {
         dialog.show()
     }
 
+    override fun onBackPressed() {
+        if (anyChangesMade){
+            setResult(Activity.RESULT_OK)
+        }
+        super.onBackPressed()
+    }
+
     fun memberAssignSuccess(user: Users){
         hideProgressDialog()
+        anyChangesMade = true
         mAssignedMembersList.add(user)
 
         /**

@@ -1,9 +1,12 @@
 package com.lex.xeldoprojectmanagement.activities
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lex.xeldoprojectmanagement.R
 import com.lex.xeldoprojectmanagement.adapters.TaskListItemsAdapter
@@ -44,10 +47,22 @@ class TaskListActivity : BaseActivity() {
             R.id.action_members -> {
                 val intent = Intent(this, MembersActivity::class.java)
                 intent.putExtra(Constants.BOARD_DETAIL, mBoardDetails)
-                startActivity(intent)
+                resultLauncher.launch(intent)
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            // There are no request codes
+            //val data: Intent? = result.data
+            showProgressDialog(resources.getString(R.string.please_wait))
+            FirestoreClass().getBoardDetails(this, boardDocumentId)
+        }
+        else{
+            Log.e("Cancelled: ","CANCELLED")
+        }
     }
 
     fun boardDetails(board: Board){
