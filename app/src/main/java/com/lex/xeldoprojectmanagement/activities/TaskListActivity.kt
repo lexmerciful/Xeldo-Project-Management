@@ -24,6 +24,8 @@ class TaskListActivity : BaseActivity() {
     private var boardDocumentId = ""
     private lateinit var mBoardDetails: Board
 
+    private var callingActivity = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityTaskListBinding.inflate(layoutInflater)
@@ -47,6 +49,7 @@ class TaskListActivity : BaseActivity() {
             R.id.action_members -> {
                 val intent = Intent(this, MembersActivity::class.java)
                 intent.putExtra(Constants.BOARD_DETAIL, mBoardDetails)
+                callingActivity = Constants.MEMBERS_ACTIVITY
                 resultLauncher.launch(intent)
             }
         }
@@ -54,7 +57,7 @@ class TaskListActivity : BaseActivity() {
     }
 
     private var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
+        if (result.resultCode == Activity.RESULT_OK && callingActivity == Constants.MEMBERS_ACTIVITY || callingActivity == Constants.CARD_DETAILS) {
             // There are no request codes
             //val data: Intent? = result.data
             showProgressDialog(resources.getString(R.string.please_wait))
@@ -146,6 +149,8 @@ class TaskListActivity : BaseActivity() {
         intent.putExtra(Constants.BOARD_DETAIL, mBoardDetails)
         intent.putExtra(Constants.TASK_LIST_ITEM_POSITION, tastListPosition)
         intent.putExtra(Constants.CARD_LIST_ITEM_POSITION, cardPosition)
-        startActivity(intent)
+        callingActivity = Constants.CARD_DETAILS
+        resultLauncher.launch(intent)
     }
+
 }

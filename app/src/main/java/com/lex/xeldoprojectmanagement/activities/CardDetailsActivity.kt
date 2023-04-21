@@ -1,18 +1,24 @@
 package com.lex.xeldoprojectmanagement.activities
 
-import androidx.appcompat.app.AppCompatActivity
+import android.app.Activity
+import android.app.AlertDialog
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import com.lex.xeldoprojectmanagement.R
 import com.lex.xeldoprojectmanagement.databinding.ActivityCardDetailsBinding
+import com.lex.xeldoprojectmanagement.firebase.FirestoreClass
 import com.lex.xeldoprojectmanagement.models.Board
+import com.lex.xeldoprojectmanagement.models.Card
+import com.lex.xeldoprojectmanagement.models.Task
 import com.lex.xeldoprojectmanagement.utils.Constants
 
 class CardDetailsActivity : BaseActivity() {
 
     private lateinit var binding: ActivityCardDetailsBinding
     private lateinit var mBoardDetails: Board
-    private var taskListItemPosition = -1
-    private var cardListItemPosition = -1
+    private var mTaskListItemPosition = -1
+    private var mCardListItemPosition = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,8 +27,30 @@ class CardDetailsActivity : BaseActivity() {
 
         getIntentDetails()
         setupActionBar(binding.toolbarCardDetailsActivity, mBoardDetails
-            .taskList[taskListItemPosition]
-            .cards[cardListItemPosition].name)
+            .taskList[mTaskListItemPosition]
+            .cards[mCardListItemPosition].name)
+
+        binding.etNameCardDetails.setText(mBoardDetails
+            .taskList[mTaskListItemPosition]
+            .cards[mCardListItemPosition].name)
+
+        // To set the edit text focus to the end
+        binding.etNameCardDetails.setSelection(binding.etNameCardDetails.text.toString().length)
+
+        binding.btnUpdateCardDetails.setOnClickListener {
+            if (binding.etNameCardDetails.text.toString().isNotEmpty()){
+                updateCardDetails()
+            } else {
+                showErrorSnackBar("Enter card name")
+            }
+        }
+    }
+
+    fun addUpdateTaskListSuccess() {
+        hideProgressDialog()
+
+        setResult(Activity.RESULT_OK)
+        finish()
     }
 
     private fun getIntentDetails() {
@@ -30,8 +58,73 @@ class CardDetailsActivity : BaseActivity() {
             mBoardDetails = intent.getParcelableExtra(Constants.BOARD_DETAIL)!!
         }
         if (intent.hasExtra(Constants.TASK_LIST_ITEM_POSITION) && intent.hasExtra(Constants.CARD_LIST_ITEM_POSITION)){
-            taskListItemPosition = intent.getIntExtra(Constants.TASK_LIST_ITEM_POSITION, 0)
-            cardListItemPosition = intent.getIntExtra(Constants.CARD_LIST_ITEM_POSITION, 0)
+            mTaskListItemPosition = intent.getIntExtra(Constants.TASK_LIST_ITEM_POSITION, 0)
+            mCardListItemPosition = intent.getIntExtra(Constants.CARD_LIST_ITEM_POSITION, 0)
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_delete_card, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.action_delete_card -> {
+                alertDialogForDeleteCard(mBoardDetails
+                    .taskList[mTaskListItemPosition]
+                    .cards[mCardListItemPosition].name)
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun updateCardDetails() {
+        val card = Card(
+            binding.etNameCardDetails.text.toString(),
+            mBoardDetails.taskList[mTaskListItemPosition].cards[mCardListItemPosition].createdBy,
+            mBoardDetails.taskList[mTaskListItemPosition].cards[mCardListItemPosition].assignedTo
+        )
+
+        mBoardDetails.taskList[mTaskListItemPosition].cards[mCardListItemPosition] = card
+
+        showProgressDialog(resources.getString(R.string.please_wait))
+        FirestoreClass().addUpdateTaskList(this, mBoardDetails)
+    }
+
+    private fun deleteCard() {
+        val cardsList: ArrayList<Card> = mBoardDetails.taskList[mTaskListItemPosition].cards
+
+        cardsList.removeAt(mCardListItemPosition)
+
+        val taskList: ArrayList<Task> = mBoardDetails.taskList
+        // To remove the fixed "ADD CARD"
+        taskList.removeAt(taskList.size - 1)
+
+        taskList[mTaskListItemPosition].cards = cardsList
+
+        showProgressDialog(resources.getString(R.string.please_wait))
+        FirestoreClass().addUpdateTaskList(this, mBoardDetails)
+    }
+
+    private fun alertDialogForDeleteCard(cardName: String) {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(resources.getString(R.string.alert))
+        builder.setMessage(resources.getString(R.string.confirmation_message_to_delete_card, cardName))
+        builder.setIcon(android.R.drawable.ic_dialog_alert)
+        //performing positive action
+        builder.setPositiveButton(resources.getString(R.string.yes)) { dialogInterface, _ ->
+            dialogInterface.dismiss()
+            deleteCard()
+        }
+        //performing negative action
+        builder.setNegativeButton(resources.getString(R.string.no)) { dialogInterface, _ ->
+            dialogInterface.dismiss()
+        }
+        // Create the AlertDialog
+        val alertDialog: AlertDialog = builder.create()
+        alertDialog.setCancelable(false)
+        alertDialog.show()
     }
 }
