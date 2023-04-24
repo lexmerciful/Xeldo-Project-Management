@@ -1,6 +1,7 @@
 package com.lex.xeldoprojectmanagement.adapters
 
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,6 +27,14 @@ open class CardListItemsAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val model = list[position]
         if (holder is MyViewHolder){
+
+            if (model.labelColor.isNotEmpty()) {
+                holder.binding.viewLabelColor.visibility = View.VISIBLE
+                holder.binding.viewLabelColor.setBackgroundColor(Color.parseColor(model.labelColor))
+            } else {
+                holder.binding.viewLabelColor.visibility = View.GONE
+            }
+
             holder.binding.tvCardName.text = model.name
 
             holder.itemView.setOnClickListener {

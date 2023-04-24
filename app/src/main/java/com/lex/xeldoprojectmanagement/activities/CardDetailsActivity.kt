@@ -2,11 +2,13 @@ package com.lex.xeldoprojectmanagement.activities
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import com.lex.xeldoprojectmanagement.R
 import com.lex.xeldoprojectmanagement.databinding.ActivityCardDetailsBinding
+import com.lex.xeldoprojectmanagement.dialogs.LabelColorListDialog
 import com.lex.xeldoprojectmanagement.firebase.FirestoreClass
 import com.lex.xeldoprojectmanagement.models.Board
 import com.lex.xeldoprojectmanagement.models.Card
@@ -19,6 +21,7 @@ class CardDetailsActivity : BaseActivity() {
     private lateinit var mBoardDetails: Board
     private var mTaskListItemPosition = -1
     private var mCardListItemPosition = -1
+    private var mSelectedColor = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,12 +40,22 @@ class CardDetailsActivity : BaseActivity() {
         // To set the edit text focus to the end
         binding.etNameCardDetails.setSelection(binding.etNameCardDetails.text.toString().length)
 
+        mSelectedColor = mBoardDetails.taskList[mTaskListItemPosition].cards[mCardListItemPosition].labelColor
+
+        if (mSelectedColor.isNotEmpty()) {
+            setColor()
+        }
+
         binding.btnUpdateCardDetails.setOnClickListener {
             if (binding.etNameCardDetails.text.toString().isNotEmpty()){
                 updateCardDetails()
             } else {
                 showErrorSnackBar("Enter card name")
             }
+        }
+
+        binding.tvSelectLabelColor.setOnClickListener {
+            showLabelColorListDialog()
         }
     }
 
@@ -61,6 +74,42 @@ class CardDetailsActivity : BaseActivity() {
             mTaskListItemPosition = intent.getIntExtra(Constants.TASK_LIST_ITEM_POSITION, 0)
             mCardListItemPosition = intent.getIntExtra(Constants.CARD_LIST_ITEM_POSITION, 0)
         }
+    }
+
+    private fun colorsList(): ArrayList<String> {
+        val colorsList: ArrayList<String> = ArrayList()
+        colorsList.add("#43C86F")
+        colorsList.add("#0C90F1")
+        colorsList.add("#F72400")
+        colorsList.add("#7A8089")
+        colorsList.add("#D57C1D")
+        colorsList.add("#770000")
+        colorsList.add("#0022F8")
+
+        return colorsList
+    }
+
+    private fun setColor() {
+        binding.tvSelectLabelColor.text = ""
+        binding.tvSelectLabelColor.setBackgroundColor(Color.parseColor(mSelectedColor))
+    }
+
+    private fun showLabelColorListDialog() {
+        val colorsList: ArrayList<String> = colorsList()
+
+        val listDialog = object : LabelColorListDialog(
+            this,
+            colorsList,
+            resources.getString(R.string.str_select_label_color),
+            mSelectedColor
+        ) {
+            override fun onItemSelected(color: String) {
+                mSelectedColor = color
+                setColor()
+            }
+
+        }
+        listDialog.show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -84,7 +133,8 @@ class CardDetailsActivity : BaseActivity() {
         val card = Card(
             binding.etNameCardDetails.text.toString(),
             mBoardDetails.taskList[mTaskListItemPosition].cards[mCardListItemPosition].createdBy,
-            mBoardDetails.taskList[mTaskListItemPosition].cards[mCardListItemPosition].assignedTo
+            mBoardDetails.taskList[mTaskListItemPosition].cards[mCardListItemPosition].assignedTo,
+            mSelectedColor
         )
 
         mBoardDetails.taskList[mTaskListItemPosition].cards[mCardListItemPosition] = card

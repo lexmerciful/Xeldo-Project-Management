@@ -24,6 +24,7 @@ object Constants {
     const val CREATE_BOARD = "createBoard"
     const val CARD_DETAILS = "cardDetails"
     const val MEMBERS_ACTIVITY = "membersActivity"
+    const val BOARD_MEMBERS_LIST = "board_members_list"
 
     const val TASK_LIST_ITEM_POSITION = "task_list_item_position"
     const val CARD_LIST_ITEM_POSITION = "card_list_item_position"
