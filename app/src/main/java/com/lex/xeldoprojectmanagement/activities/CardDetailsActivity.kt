@@ -13,6 +13,7 @@ import com.lex.xeldoprojectmanagement.firebase.FirestoreClass
 import com.lex.xeldoprojectmanagement.models.Board
 import com.lex.xeldoprojectmanagement.models.Card
 import com.lex.xeldoprojectmanagement.models.Task
+import com.lex.xeldoprojectmanagement.models.Users
 import com.lex.xeldoprojectmanagement.utils.Constants
 
 class CardDetailsActivity : BaseActivity() {
@@ -22,6 +23,7 @@ class CardDetailsActivity : BaseActivity() {
     private var mTaskListItemPosition = -1
     private var mCardListItemPosition = -1
     private var mSelectedColor = ""
+    private lateinit var mMembersDetailsList: ArrayList<Users>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,6 +75,9 @@ class CardDetailsActivity : BaseActivity() {
         if (intent.hasExtra(Constants.TASK_LIST_ITEM_POSITION) && intent.hasExtra(Constants.CARD_LIST_ITEM_POSITION)){
             mTaskListItemPosition = intent.getIntExtra(Constants.TASK_LIST_ITEM_POSITION, 0)
             mCardListItemPosition = intent.getIntExtra(Constants.CARD_LIST_ITEM_POSITION, 0)
+        }
+        if (intent.hasExtra(Constants.BOARD_MEMBERS_LIST)) {
+            mMembersDetailsList = intent.getParcelableArrayListExtra(Constants.BOARD_MEMBERS_LIST)!!
         }
     }
 

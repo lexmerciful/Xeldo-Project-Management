@@ -15,6 +15,7 @@ import com.lex.xeldoprojectmanagement.firebase.FirestoreClass
 import com.lex.xeldoprojectmanagement.models.Board
 import com.lex.xeldoprojectmanagement.models.Card
 import com.lex.xeldoprojectmanagement.models.Task
+import com.lex.xeldoprojectmanagement.models.Users
 import com.lex.xeldoprojectmanagement.utils.Constants
 
 class TaskListActivity : BaseActivity() {
@@ -23,6 +24,7 @@ class TaskListActivity : BaseActivity() {
 
     private var boardDocumentId = ""
     private lateinit var mBoardDetails: Board
+    private lateinit var mAssignedMemberDetailList: ArrayList<Users>
 
     private var callingActivity = ""
 
@@ -82,6 +84,9 @@ class TaskListActivity : BaseActivity() {
 
         val adapter = TaskListItemsAdapter(this, board.taskList)
         binding.rvTaskList.adapter = adapter
+
+        showProgressDialog(resources.getString(R.string.please_wait))
+        FirestoreClass().getAssignedMembersListDetails(this, mBoardDetails.assignedTo)
     }
 
     fun addUpdateTaskListSuccess(){
@@ -149,8 +154,16 @@ class TaskListActivity : BaseActivity() {
         intent.putExtra(Constants.BOARD_DETAIL, mBoardDetails)
         intent.putExtra(Constants.TASK_LIST_ITEM_POSITION, tastListPosition)
         intent.putExtra(Constants.CARD_LIST_ITEM_POSITION, cardPosition)
+        // To pass the Assigned details list
+        intent.putExtra(Constants.BOARD_MEMBERS_LIST, mAssignedMemberDetailList)
         callingActivity = Constants.CARD_DETAILS
         resultLauncher.launch(intent)
+    }
+
+    fun boardMembersDetailsList(list: ArrayList<Users>) {
+        mAssignedMemberDetailList = list
+
+        hideProgressDialog()
     }
 
 }

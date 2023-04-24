@@ -170,7 +170,7 @@ class FirestoreClass {
             }
     }
 
-    fun getAssignedMembersListDetails(activity: MembersActivity, assignedTo: ArrayList<String>){
+    fun getAssignedMembersListDetails(activity: Activity, assignedTo: ArrayList<String>){
         mFireStore.collection(Constants.USERS)
             .whereIn(Constants.ID, assignedTo)
             .get()
@@ -183,10 +183,18 @@ class FirestoreClass {
                     val user = i.toObject(Users::class.java)!!
                     usersAssignedList.add(user)
                 }
-                activity.setupMembersListAdapter(usersAssignedList)
+                if (activity is MembersActivity){
+                    activity.setupMembersListAdapter(usersAssignedList)
+                } else if (activity is TaskListActivity){
+                    activity.boardMembersDetailsList(usersAssignedList)
+                }
             }.addOnFailureListener {
                     e ->
-                activity.hideProgressDialog()
+                if (activity is MembersActivity){
+                    activity.hideProgressDialog()
+                } else if (activity is TaskListActivity) {
+                    activity.hideProgressDialog()
+                }
                 Log.e(activity.javaClass.simpleName, "Error recovering members list",e)
             }
     }
