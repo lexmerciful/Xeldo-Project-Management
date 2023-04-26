@@ -9,6 +9,7 @@ import android.view.MenuItem
 import com.lex.xeldoprojectmanagement.R
 import com.lex.xeldoprojectmanagement.databinding.ActivityCardDetailsBinding
 import com.lex.xeldoprojectmanagement.dialogs.LabelColorListDialog
+import com.lex.xeldoprojectmanagement.dialogs.SelectMemberListDialog
 import com.lex.xeldoprojectmanagement.firebase.FirestoreClass
 import com.lex.xeldoprojectmanagement.models.Board
 import com.lex.xeldoprojectmanagement.models.Card
@@ -58,6 +59,10 @@ class CardDetailsActivity : BaseActivity() {
 
         binding.tvSelectLabelColor.setOnClickListener {
             showLabelColorListDialog()
+        }
+
+        binding.tvSelectMembers.setOnClickListener {
+            cardMembersListDialog()
         }
     }
 
@@ -111,6 +116,44 @@ class CardDetailsActivity : BaseActivity() {
             override fun onItemSelected(color: String) {
                 mSelectedColor = color
                 setColor()
+            }
+
+        }
+        listDialog.show()
+    }
+
+    private fun cardMembersListDialog() {
+        var cardAssignedMembersList = mBoardDetails
+            .taskList[mTaskListItemPosition]
+            .cards[mCardListItemPosition].assignedTo
+
+        /**
+         * We first check if theres any member assigned to the card, if there are we then check if
+         * for every single member assigned to the board and every single member assigned to the card
+         * and then check if the Board members list ID is the same with Card Members list and if true
+         * make them selected in the card and if not, make them unselected in the card
+         */
+        if (cardAssignedMembersList.size > 0) {
+            for (i in mMembersDetailsList.indices) {
+                for (j in cardAssignedMembersList) {
+                    if (mMembersDetailsList[i].id == j) {
+                        mMembersDetailsList[i].selected = true
+                    }
+                }
+            }
+        } else {
+            for (i in mMembersDetailsList.indices) {
+                mMembersDetailsList[i].selected = false
+            }
+        }
+
+        val listDialog = object : SelectMemberListDialog(
+            this,
+            resources.getString(R.string.select_members),
+            mMembersDetailsList
+        ) {
+            override fun onItemSelected(users: Users, action: String) {
+                // TODO SELECT MEMBERS
             }
 
         }

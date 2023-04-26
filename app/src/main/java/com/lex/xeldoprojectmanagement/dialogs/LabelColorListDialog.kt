@@ -8,7 +8,7 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lex.xeldoprojectmanagement.R
 import com.lex.xeldoprojectmanagement.adapters.LabelColorListItemsAdapter
-import com.lex.xeldoprojectmanagement.databinding.DialogColorListBinding
+import com.lex.xeldoprojectmanagement.databinding.DialogListBinding
 
 abstract class LabelColorListDialog(
     context: Context,
@@ -18,11 +18,11 @@ abstract class LabelColorListDialog(
 ) : Dialog(context) {
 
     private var adapter: LabelColorListItemsAdapter? = null
-    lateinit var binding: DialogColorListBinding
+    lateinit var binding: DialogListBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DialogColorListBinding.inflate(layoutInflater)
+        binding = DialogListBinding.inflate(layoutInflater)
         //val view = LayoutInflater.from(context).inflate(R.layout.dialog_color_list, null)
 
         setContentView(binding.root)

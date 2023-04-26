@@ -11,7 +11,8 @@ data class Users(
     val mobile: Long = 0,
     val gender: String = "",
     val dob: String = "",
-    val fcmToken: String = ""
+    val fcmToken: String = "",
+    var selected: Boolean = false
 ): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString()!!,
