@@ -12,7 +12,8 @@ import com.lex.xeldoprojectmanagement.models.SelectedMembers
 
 class CardMemberListItemsAdapter(
     private val context: Context,
-    private val selectedMembersList: ArrayList<SelectedMembers>
+    private val selectedMembersList: ArrayList<SelectedMembers>,
+    private val assignMembers: Boolean
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     class MyViewHolder(val binding: ItemCardSelectedMembersBinding): RecyclerView.ViewHolder(binding.root)
@@ -39,7 +40,7 @@ class CardMemberListItemsAdapter(
         val model = selectedMembersList[position]
 
         if (holder is MyViewHolder) {
-            if (position == selectedMembersList.size - 1) {
+            if (position == selectedMembersList.size - 1 && assignMembers) {
                 holder.binding.ivAddMember.visibility = View.VISIBLE
                 holder.binding.ivSelectedMemberImage.visibility = View.GONE
             } else {
