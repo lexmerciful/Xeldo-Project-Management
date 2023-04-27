@@ -15,8 +15,8 @@ abstract class SelectMemberListDialog(
     private var assignedMembersList: ArrayList<Users>
 ) : Dialog(context) {
 
-    private var adapter: MembersListItemsAdapter? = null
-    private lateinit var binding: DialogListBinding
+    private var membersListItemsAdapter: MembersListItemsAdapter? = null
+    lateinit var binding: DialogListBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,16 +34,16 @@ abstract class SelectMemberListDialog(
         binding.tvTitle.text = title
 
         if (assignedMembersList.size > 0){
-            adapter = MembersListItemsAdapter(context, assignedMembersList)
+            membersListItemsAdapter = MembersListItemsAdapter(context, assignedMembersList)
             binding.rvList.apply {
-                adapter = adapter
+                adapter = membersListItemsAdapter
                 layoutManager = LinearLayoutManager(context)
             }
 
-            adapter!!.onClickListener = object : MembersListItemsAdapter.OnClickListener{
-                override fun onClick(position: Int, users: Users, action: String) {
+            membersListItemsAdapter!!.onClickListener = object : MembersListItemsAdapter.OnClickListener{
+                override fun onClick(position: Int, user: Users, action: String) {
                     dismiss()
-                    onItemSelected(users, action)
+                    onItemSelected(user, action)
                 }
 
             }
@@ -51,6 +51,6 @@ abstract class SelectMemberListDialog(
 
     }
 
-    protected abstract fun onItemSelected(users: Users, action: String)
+    protected abstract fun onItemSelected(user: Users, action: String)
 
 }

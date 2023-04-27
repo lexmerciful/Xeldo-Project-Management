@@ -68,6 +68,6 @@ open class MembersListItemsAdapter(
     class MyViewHolder(val binding: ItemMemberBinding): RecyclerView.ViewHolder(binding.root)
 
     interface OnClickListener{
-        fun onClick(position: Int, users: Users, action: String)
+        fun onClick(position: Int, user: Users, action: String)
     }
 }
