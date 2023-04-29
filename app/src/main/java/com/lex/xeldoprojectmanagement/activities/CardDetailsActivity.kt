@@ -82,11 +82,9 @@ class CardDetailsActivity : BaseActivity() {
             .cards[mCardListItemPosition].dueDate
 
         if (mSelectedDueDateMiliSecs > 0) {
-            val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
-            val selectedDate = simpleDateFormat.parse(Date(mSelectedDueDateMiliSecs).toString())
-            if (selectedDate != null) {
-                binding.tvSelectDueDate.text = selectedDate.toString()
-            }
+            val simpleDateFormat = SimpleDateFormat("EEE, MMM d, yyyy", Locale.US)
+            val selectedDate = simpleDateFormat.format(Date(mSelectedDueDateMiliSecs))
+            binding.tvSelectDueDate.text = selectedDate.toString()
         }
 
         binding.tvSelectDueDate.setOnClickListener {
