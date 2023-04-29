@@ -2,11 +2,14 @@ package com.lex.xeldoprojectmanagement.activities
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.DatePickerDialog
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.GridLayoutManager
 import com.lex.xeldoprojectmanagement.R
 import com.lex.xeldoprojectmanagement.adapters.CardMemberListItemsAdapter
@@ -16,6 +19,9 @@ import com.lex.xeldoprojectmanagement.dialogs.SelectMemberListDialog
 import com.lex.xeldoprojectmanagement.firebase.FirestoreClass
 import com.lex.xeldoprojectmanagement.models.*
 import com.lex.xeldoprojectmanagement.utils.Constants
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class CardDetailsActivity : BaseActivity() {
 
@@ -25,6 +31,7 @@ class CardDetailsActivity : BaseActivity() {
     private var mCardListItemPosition = -1
     private var mSelectedColor = ""
     private lateinit var mMembersDetailsList: ArrayList<Users>
+    private var mSelectedDueDateMiliSecs: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,6 +73,25 @@ class CardDetailsActivity : BaseActivity() {
         }
 
         setupSelectedMembersList()
+
+        /**
+         * If Due date already exist in db, show in the textview
+         */
+        mSelectedDueDateMiliSecs = mBoardDetails
+            .taskList[mTaskListItemPosition]
+            .cards[mCardListItemPosition].dueDate
+
+        if (mSelectedDueDateMiliSecs > 0) {
+            val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
+            val selectedDate = simpleDateFormat.parse(Date(mSelectedDueDateMiliSecs).toString())
+            if (selectedDate != null) {
+                binding.tvSelectDueDate.text = selectedDate.toString()
+            }
+        }
+
+        binding.tvSelectDueDate.setOnClickListener {
+            showDatePicker()
+        }
     }
 
     fun addUpdateTaskListSuccess() {
@@ -227,6 +253,32 @@ class CardDetailsActivity : BaseActivity() {
         }
     }
 
+    private fun showDatePicker() {
+        var cal = Calendar.getInstance()
+        val year = cal.get(Calendar.YEAR)
+        val month = cal.get(Calendar.MONTH)
+        val day = cal.get(Calendar.DAY_OF_MONTH)
+
+        val dpd = DatePickerDialog(
+            this,
+            DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                val sDay = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
+                val sMonth = if ((monthOfYear + 1) < 10) "0${monthOfYear + 1}" else "${monthOfYear + 1}"
+
+                val  selectedDate = "$sDay/$monthOfYear/$year"
+                binding.tvSelectDueDate.text = selectedDate
+
+                val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
+                val theDate  = sdf.parse(selectedDate)
+                mSelectedDueDateMiliSecs = theDate!!.time
+            },
+            year,
+            month,
+            day
+        )
+        dpd.show()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_delete_card, menu)
         return super.onCreateOptionsMenu(menu)
@@ -249,7 +301,8 @@ class CardDetailsActivity : BaseActivity() {
             binding.etNameCardDetails.text.toString(),
             mBoardDetails.taskList[mTaskListItemPosition].cards[mCardListItemPosition].createdBy,
             mBoardDetails.taskList[mTaskListItemPosition].cards[mCardListItemPosition].assignedTo,
-            mSelectedColor
+            mSelectedColor,
+            mSelectedDueDateMiliSecs
         )
 
         val taskList: ArrayList<Task> = mBoardDetails.taskList

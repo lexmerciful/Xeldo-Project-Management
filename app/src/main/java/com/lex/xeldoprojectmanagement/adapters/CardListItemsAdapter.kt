@@ -77,7 +77,7 @@ open class CardListItemsAdapter(
                         cardMemberListItemsAdapter.SetOnClickListener(object : CardMemberListItemsAdapter.OnClickListener{
                             override fun onClick() {
                                 if (onClickListener != null){
-                                    onClickListener!!.onClick(position)
+                                    onClickListener!!.onClick(holder.adapterPosition)
                                 }
                             }
 
