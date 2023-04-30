@@ -29,6 +29,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.TaskListActivity"
+            android:windowSoftInputMode="adjustResize"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />

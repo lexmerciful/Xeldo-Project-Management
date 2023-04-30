@@ -179,6 +179,7 @@
                 android:id="@+id/rv_card_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:isScrollContainer="true"
                 android:layout_margin="@dimen/task_item_rv_card_list_margin" />
 
             <androidx.cardview.widget.CardView
