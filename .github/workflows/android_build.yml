@@ -20,8 +20,6 @@ jobs:
           java-version: '11'
       - name: Add executable permission to gradlew
         run: chmod +x gradlew
-      - name: Run Tests
-        run: ./gradlew test
       - name: Create file
         run: cat /home/runner/work/Xeldo-Project-Management/Xeldo-Project-Management/app/google-services.json | base64
 
@@ -29,6 +27,8 @@ jobs:
         env:
           DATA: ${{secrets.GOOGLE_SERVICES_JSON}}
         run: echo $DATA > /home/runner/work/Xeldo-Project-Management/Xeldo-Project-Management/app/google-services.json
+      - name: Run Tests
+        run: ./gradlew test
       - name: Build Project
         run: ./gradlew assemble
       - name: Build Debug APK
