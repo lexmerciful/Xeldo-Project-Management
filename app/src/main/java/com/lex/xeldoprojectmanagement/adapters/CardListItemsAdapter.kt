@@ -101,7 +101,7 @@ open class CardListItemsAdapter(
     }
 
     interface OnClickListener{
-        fun onClick(position: Int)
+        fun onClick(cardPosition: Int)
     }
 
     fun setOnClickListener(onClickListener: OnClickListener){

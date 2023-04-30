@@ -168,4 +168,16 @@ class TaskListActivity : BaseActivity() {
         binding.rvTaskList.adapter = adapter
     }
 
+    fun updateCardsInTaskList(taskListPosition: Int, cards: ArrayList<Card>) {
+        // Get rid of the Add Cards dummy card
+        mBoardDetails.taskList.removeAt(mBoardDetails.taskList.size - 1)
+
+        // Adjust the tasklist position in the board
+        mBoardDetails.taskList[taskListPosition].cards = cards
+
+        showProgressDialog(resources.getString(R.string.please_wait))
+        // Update the board
+        FirestoreClass().addUpdateTaskList(this, mBoardDetails)
+    }
+
 }
