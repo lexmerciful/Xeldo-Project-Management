@@ -13,6 +13,9 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.lex.xeldoprojectmanagement.R
 import com.lex.xeldoprojectmanagement.activities.MainActivity
+import com.lex.xeldoprojectmanagement.activities.SignInActivity
+import com.lex.xeldoprojectmanagement.firebase.FirestoreClass
+import com.lex.xeldoprojectmanagement.utils.Constants
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
 
@@ -25,6 +28,15 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         // Check if message is not empty
         remoteMessage.data.isNotEmpty().let {
             Log.d(TAG, "Message data payload: ${remoteMessage.data}")
+
+            /**
+             * Get the title and message we created in the MembersActivity
+             * SendNotificationToUserAsyncTask class
+             */
+            val title = remoteMessage.data[Constants.FCM_KEY_TITLE]!!
+            val message = remoteMessage.data[Constants.FCM_KEY_MESSAGE]!!
+
+            sendNotificationToUserPhone(title, message)
         }
 
         // Check if message contains a notification
@@ -54,9 +66,25 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     // To send a notication, this will be called
-    private fun sendNotification(messageBody: String?) {
-        val intent = Intent(this, MainActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+    private fun sendNotificationToUserPhone(title: String, message: String?) {
+        /**
+         * When the notification is clicked and the current user is active and logged in
+         * send the app to the MainActivity and if not send to the SignIn Activity
+         */
+        val intent = if (FirestoreClass().getCurrentUserId().isNotEmpty()){
+            Intent(this, MainActivity::class.java)
+        } else {
+            Intent(this, SignInActivity::class.java)
+        }
+
+        /**
+         * To make sure that the activity are not overlapping each other or that too many
+         * of the same activity are opened at the same time, so there will only be one
+         * MainActivity opened at a time
+         */
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or
+            Intent.FLAG_ACTIVITY_CLEAR_TASK or
+            Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = PendingIntent.getActivity(this,
             0, intent, PendingIntent.FLAG_ONE_SHOT)
         val channelId = this.resources.getString(R.string.default_notification_channel_id)
@@ -64,8 +92,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val notificationBuilder = NotificationCompat.Builder(
             this, channelId
         ).setSmallIcon(R.drawable.ic_stat_ic_notification)
-            .setContentTitle(getString(R.string.notification_title))
-            .setContentText("Message")
+            .setContentTitle(title)
+            .setContentText(message)
             .setAutoCancel(true) //Ensures notification is cancelled when clicked
             .setSound(defaultSoundUri)
             .setContentIntent(pendingIntent)
