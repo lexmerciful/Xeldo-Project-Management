@@ -3,15 +3,18 @@ package com.lex.xeldoprojectmanagement.adapters
 import android.app.AlertDialog
 import android.content.Context
 import android.content.res.Resources
+import android.graphics.Rect
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.lex.xeldoprojectmanagement.R
 import com.lex.xeldoprojectmanagement.activities.TaskListActivity
 import com.lex.xeldoprojectmanagement.databinding.ItemTaskBinding
@@ -138,6 +141,7 @@ open class TaskListItemsAdapter(
 
                 }
             )
+
             // To set drag and drop functionality of the adapter items
             val dividerItemDecoration = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
             holder.binding.rvCardList.addItemDecoration(dividerItemDecoration)

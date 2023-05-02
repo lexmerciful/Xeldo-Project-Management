@@ -79,6 +79,7 @@
     <string name="str_select_member">Select Member</string>
 
 
-    <string name="default_notification_channel_id">projemanag_notification_channel_id</string>
+    <string name="default_notification_channel_id">xeldo_project_notification_channel_id</string>
     <string name="user_not_found">User not found!</string>
+    <string name="notification_title">Title</string>
 </resources>

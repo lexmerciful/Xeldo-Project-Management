@@ -46,6 +46,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.firebase:firebase-firestore-ktx'
     implementation 'com.google.firebase:firebase-storage-ktx'
+    implementation 'com.google.firebase:firebase-messaging'
     // Dependency for Rounded Image
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     // Glide Dependency for image fetching, loading & decoding
